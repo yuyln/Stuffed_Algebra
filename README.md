@@ -107,3 +107,4 @@ scalar / array: divides scalar by each element of array.
 ```
 
 ## `my::Matrix`
+## `my::Complex`

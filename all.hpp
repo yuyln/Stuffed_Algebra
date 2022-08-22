@@ -10,6 +10,7 @@
 #define ARRAY_NEW_SIZE_FACTOR (2 << 5)
 #define MAX_VEC_DIMS (2 << 10)
 #define SEPARETOR " "
+#define COMPLEX_IMG ""
 
 
 #ifndef NO_ARRAY_ASSERTION
@@ -1618,6 +1619,250 @@ namespace my
         std::size_t j = m.cols() - 1;
         out << m(i, j);
 
+        return out;
+    }
+}
+
+
+//COMPLEX
+namespace my
+{
+    template <typename E, typename T>
+    class ComplexExpression
+    {
+    public:
+        T r() const { return static_cast<const E&>(*this).r(); }
+        T i() const { return static_cast<const E&>(*this).i(); }
+    };
+
+    template<typename T>
+    class Complex : public ComplexExpression<Complex<T>, T>
+    {
+    public:
+        Complex(): real(), imag() { }
+
+        Complex(T real_part, T imag_part): real(real_part), imag(imag_part) { }
+
+        Complex(const Complex<T>& other) = default;
+
+        Complex(Complex<T>&& other) = default;
+
+        template <typename E>
+        Complex(const ComplexExpression<E, T>& expr): real(expr.r()), imag(expr.i()) { }
+
+        ~Complex() = default;
+        const T& r() const { return real; }
+        const T& i() const { return imag; }
+        T& r() { return real; }
+        T& i() { return imag; }
+    private:
+        T real, imag;
+    };
+
+    template <typename P1, typename P2, typename T>
+    class ComplexSum : public ComplexExpression<ComplexSum<P1, P2, T>, T>
+    {
+    public:
+        ComplexSum(const P1& p1_, const P2& p2_): p1(p1_), p2(p2_) { }
+        T r() const { return p1.r() + p2.r(); }
+        T i() const { return p1.i() + p2.i(); }
+    private:
+        const P1& p1;
+        const P2& p2;
+    };
+
+    template <typename P1, typename P2, typename T>
+    ComplexSum<P1, P2, T> operator+(const ComplexExpression<P1, T>& c1, const ComplexExpression<P2, T>& c2)
+    {
+        return ComplexSum<P1, P2, T> (
+                                  *static_cast<const P1*>(&c1),
+                                  *static_cast<const P2*>(&c2));
+    }
+
+    template <typename P1, typename P2, typename T>
+    class ComplexSub : public ComplexExpression<ComplexSub<P1, P2, T>, T>
+    {
+    public:
+        ComplexSub(const P1& p1_, const P2& p2_): p1(p1_), p2(p2_) { }
+        T r() const { return p1.r() - p2.r(); }
+        T i() const { return p1.i() - p2.i(); }
+    private:
+        const P1& p1;
+        const P2& p2;
+    };
+
+    template <typename P1, typename P2, typename T>
+    ComplexSub<P1, P2, T> operator-(const ComplexExpression<P1, T>& c1, const ComplexExpression<P2, T>& c2)
+    {
+        return ComplexSub<P1, P2, T> (
+                                  *static_cast<const P1*>(&c1),
+                                  *static_cast<const P2*>(&c2));
+    }
+
+    template <typename P1, typename P2, typename T>
+    class ComplexMult : public ComplexExpression<ComplexMult<P1, P2, T>, T>
+    {
+    public:
+        ComplexMult(const P1& p1_, const P2& p2_): p1(p1_), p2(p2_) { }
+        T r() const { return p1.r() * p2.r() - p1.i() * p2.i(); }
+        T i() const { return p1.r() * p2.i() + p1.i() * p2.r(); }
+    private:
+        const P1& p1;
+        const P2& p2;
+    };
+
+    template <typename P1, typename P2, typename T>
+    ComplexMult<P1, P2, T> operator*(const ComplexExpression<P1, T>& c1, const ComplexExpression<P2, T>& c2)
+    {
+        return ComplexMult<P1, P2, T> (
+                                       *static_cast<const P1*>(&c1),
+                                       *static_cast<const P2*>(&c2));
+    }
+
+    template <typename P1, typename P2, typename T>
+    class ComplexDiv : public ComplexExpression<ComplexDiv<P1, P2, T>, T>
+    {
+    public:
+        ComplexDiv(const P1& p1_, const P2& p2_): p1(p1_), p2(p2_) { }
+        T r() const { return (p1.r() * p2.r() + p1.i() * p2.i()) / (p2.r() * p2.r() + p2.i() * p2.i()); }
+        T i() const { return (p1.i() * p2.r() - p1.r() * p2.i()) / (p2.r() * p2.r() + p2.i() * p2.i()); }
+    private:
+        const P1& p1;
+        const P2& p2;
+    };
+
+    template <typename P1, typename P2, typename T>
+    ComplexDiv<P1, P2, T> operator/(const ComplexExpression<P1, T>& c1, const ComplexExpression<P2, T>& c2)
+    {
+        return ComplexDiv<P1, P2, T> (
+                                      *static_cast<const P1*>(&c1),
+                                      *static_cast<const P2*>(&c2));
+    }
+
+    template <typename P1, typename T>
+    class ComplexMultScal : public ComplexExpression<ComplexMultScal<P1, T>, T>
+    {
+    public:
+        ComplexMultScal(const P1& p1_, const T& s_): p1(p1_), s(s_) { }
+        T r() const { return p1.r() * s; }
+        T i() const { return p1.i() * s; }
+    private:
+        const P1& p1;
+        const T& s;
+    };
+
+    template <typename P1, typename T>
+    ComplexMultScal<P1, T> operator*(const ComplexExpression<P1, T>& c1, const T& c2)
+    {
+        return ComplexMultScal<P1, T> (
+                                       *static_cast<const P1*>(&c1),
+                                       c2);
+    }
+
+    template <typename P1, typename T>
+    ComplexMultScal<P1, T> operator*(const T& c2, const ComplexExpression<P1, T>& c1)
+    {
+        return ComplexMultScal<P1, T> (
+                                       *static_cast<const P1*>(&c1),
+                                       c2);
+    }
+
+    template <typename P1, typename T>
+    class ComplexDivScal : public ComplexExpression<ComplexDivScal<P1, T>, T>
+    {
+    public:
+        ComplexDivScal(const P1& p1_, const T& s_): p1(p1_), s(s_) { }
+        T r() const { return p1.r() / s; }
+        T i() const { return p1.i() / s; }
+    private:
+        const P1& p1;
+        const T& s;
+    };
+
+    template <typename P1, typename T>
+    ComplexDivScal<P1, T> operator/(const ComplexExpression<P1, T>& c1, const T& c2)
+    {
+        return ComplexDivScal<P1, T> (
+                                      *static_cast<const P1*>(&c1),
+                                      c2);
+    }
+
+    template <typename P1, typename T>
+    class ComplexDivScalI : public ComplexExpression<ComplexDivScalI<P1, T>, T>
+    {
+    public:
+        ComplexDivScalI(const P1& p1_, const T& s_): p1(p1_), s(s_) { }
+        T r() const { return (s * p1.r()) / (p1.r() * p1.r() + p1.i() * p1.i()); }
+        T i() const { return (-s * p1.i()) / (p1.r() * p1.r() + p1.i() * p1.i()); }
+    private:
+        const P1& p1;
+        const T& s;
+    };
+
+    template <typename P1, typename T>
+    ComplexDivScalI<P1, T> operator/(const T& c2, const ComplexExpression<P1, T>& c1)
+    {
+        return ComplexDivScalI<P1, T> (
+                                       *static_cast<const P1*>(&c1),
+                                       c2);
+    }
+
+    template <typename P1, typename T>
+    class ComplexConjug : public ComplexExpression<ComplexConjug<P1, T>, T>
+    {
+    public:
+        ComplexConjug(const P1& p1_): p1(p1_) { }
+        T r() const { return p1.r(); }
+        T i() const { return -p1.i(); }
+    private:
+        const P1& p1;
+    };
+
+    template <typename P1, typename T>
+    ComplexConjug<P1, T> operator!(const ComplexExpression<P1, T>& c1)
+    {
+        return ComplexConjug<P1, T> (*static_cast<const P1*>(&c1));
+    }
+
+    template <typename P1, typename T>
+    class ComplexMinus : public ComplexExpression<ComplexMinus<P1, T>, T>
+    {
+    public:
+        ComplexMinus(const P1& p1_): p1(p1_) { }
+        T r() const { return -p1.r(); }
+        T i() const { return -p1.i(); }
+    private:
+        const P1& p1;
+    };
+
+    template <typename P1, typename T>
+    ComplexMinus<P1, T> operator-(const ComplexExpression<P1, T>& c1)
+    {
+        return ComplexMinus<P1, T> (*static_cast<const P1*>(&c1));
+    }
+
+    template <typename T>
+    class ComplexExp : public ComplexExpression<ComplexExp<T>, T>
+    {
+    public:
+        ComplexExp(const T& p1_): p1(p1_) { }
+        T r() const { return cos(p1); }
+        T i() const { return sin(p1); }
+    private:
+        const T& p1;
+    };
+
+    template <typename T>
+    ComplexExp<T> complexExp(const T& theta)
+    {
+        return ComplexExp<T> (theta);
+    }
+
+
+    template<typename E, typename T>
+    std::ostream& operator<<(std::ostream& out, const ComplexExpression<E, T>& expr)
+    {
+        out << expr.r() << SEPARETOR << expr.i() << COMPLEX_IMG;
         return out;
     }
 }

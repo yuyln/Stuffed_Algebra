@@ -4,3 +4,4 @@ vec.hpp
 matrix.hpp
 *.bat
 *.exe
+output_examples
