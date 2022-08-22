@@ -393,10 +393,14 @@ namespace my
     template <typename P1, typename P2, typename T>
     T operator^(const VecExpression<P1, T>& v1, const VecExpression<P2, T>& v2)
     {
-        vec_assert(v1.dim() == v2.dim());
-        T ret = 0.0;
+        if (v1.dim() != v2.dim())
+        {
+            std::cerr << "Trying to dot product with vecs of different lengths: " << v1.dim() << " x " << v2.dim() << std::endl;
+            exit(-1);
+        }
+        T ret = T();
         for (std::size_t i = 0; i < v1.dim(); ++i)
-            ret += v1[i] * v2[i];
+            ret = ret + v1[i] * v2[i];
         return ret;
     }
 
@@ -810,6 +814,21 @@ namespace my
         return ArrayNeg<P1, T>(
             *static_cast<const P1*>(&v1)
         );
+    }
+
+    template <typename P1, typename P2, typename T>
+    T operator^(const ArrayExpression<P1, T>& p1, const ArrayExpression<P2, T>& p2)
+    {
+        if (p1.len() != p2.len())
+        {
+            std::cerr << "Trying to dot product with arrays of different lengths: " << p1.len() << " x " << p2.len() << std::endl;
+            exit(-1);
+        }
+
+        T ret = T();
+        for (std::size_t i = 0; i < p1.len(); ++i)
+            ret = ret + p1[i] * p2[i];
+        return ret;
     }
 
     template <typename E, typename T>

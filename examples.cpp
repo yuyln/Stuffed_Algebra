@@ -51,6 +51,7 @@ void exampleArrays()
     std::cout << "array1 - array2: " << array1 - array2 << std::endl;
     std::cout << "array1 * array2: " << array1 * array2 << std::endl;
     std::cout << "array1 / array2: " << array1 / array2 << std::endl;
+    std::cout << "array1 ^ array2: " << (array1 ^ array2) << std::endl;
     std::cout << "2.3 * array1: " << 2.3 * array1 << std::endl;
     std::cout << "array1 / 2.0: " << array1 / 2.0 << std::endl;
     std::cout << "2.0 / array1: " << 2.0 / array1 << std::endl;
