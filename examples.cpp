@@ -142,6 +142,9 @@ void exampleComplex(std::ostream &out=std::cout)
     out << "c1 / c2: " << c1 / c2 << std::endl;
     out << "c1 / 2.0: " << c1 / 2.0 << std::endl;
     out << "2.0 / c1: " << 2.0 / c1 << std::endl;
+    out << "2.0 + c1: " << 2.0 + c1 << std::endl;
+    out << "c1 - 2.0: " << c1 - 2.0 << std::endl;
+    out << "2.0 - c1: " << 2.0 - c1 << std::endl;
     out << "-c1: " << -c1 << std::endl;
     out << "!c1: " << !c1 << std::endl;
     out << "c1 * !c1: " << c1 * !c1 << std::endl;

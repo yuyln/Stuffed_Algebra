@@ -9,8 +9,9 @@
 
 #define ARRAY_NEW_SIZE_FACTOR (2 << 5)
 #define MAX_VEC_DIMS (2 << 10)
-#define SEPARETOR " "
-#define COMPLEX_IMG ""
+#define SEPARATOR " "
+#define COMPLEX_IMG "i"
+#define COMPLEX_BET ""
 
 
 #ifndef NO_ARRAY_ASSERTION
@@ -409,7 +410,7 @@ namespace my
     std::ostream& operator<<(std::ostream& out, const VecExpression<E, T>& v)
     {
         for (std::size_t i = 0; i < v.dim() - 1; ++i)
-            out << v[i] << SEPARETOR;
+            out << v[i] << SEPARATOR;
         std::size_t i = v.dim() - 1;
         out << v[i];
         return out;
@@ -839,7 +840,7 @@ namespace my
             return out;
         
         for (std::size_t i = 0; i < v.len() - 1; ++i)
-            out << v[i] << SEPARETOR;
+            out << v[i] << SEPARATOR;
 
         std::size_t i = v.len() - 1;
         out << v[i];
@@ -1605,7 +1606,7 @@ namespace my
         {
             for (std::size_t j = 0; j < m.cols() - 1; ++j)
             {
-                out << m(i, j) << SEPARETOR;
+                out << m(i, j) << SEPARATOR;
             }
             std::size_t j = m.cols() - 1;
             out << m(i, j) << std::endl;
@@ -1614,7 +1615,7 @@ namespace my
         std::size_t i = m.rows() - 1;
         for (std::size_t j = 0; j < m.cols() - 1; ++j)
         {
-            out << m(i, j) << SEPARETOR;
+            out << m(i, j) << SEPARATOR;
         }
         std::size_t j = m.cols() - 1;
         out << m(i, j);
@@ -1858,11 +1859,71 @@ namespace my
         return ComplexExp<T> (theta);
     }
 
+    template <typename P1, typename T>
+    class ComplexSumSca : public ComplexExpression<ComplexSumSca<P1, T>, T>
+    {
+    public:
+        ComplexSumSca(const P1& p1_, const T& s_): p1(p1_), s(s_) { }
+        T r() const { return p1.r() + s; }
+        T i() const { return p1.i(); }
+    private:
+        const P1& p1;
+        const T s;
+    };
+
+    template <typename E, typename T>
+    ComplexSumSca<E, T> operator+(const ComplexExpression<E, T>& c, const T& s)
+    {
+        return ComplexSumSca<E, T>(*static_cast<const E*>(&c), s);
+    }
+
+    template <typename E, typename T>
+    ComplexSumSca<E, T> operator+(const T& s, const ComplexExpression<E, T>& c)
+    {
+        return ComplexSumSca<E, T>(*static_cast<const E*>(&c), s);
+    }
+
+    template <typename P1, typename T>
+    class ComplexSubSca : public ComplexExpression<ComplexSubSca<P1, T>, T>
+    {
+    public:
+        ComplexSubSca(const P1& p1_, const T& s_): p1(p1_), s(s_) { }
+        T r() const { return p1.r() - s; }
+        T i() const { return p1.i(); }
+    private:
+        const P1& p1;
+        const T s;
+    };
+
+    template <typename E, typename T>
+    ComplexSubSca<E, T> operator-(const ComplexExpression<E, T>& c, const T& s)
+    {
+        return ComplexSubSca<E, T>(*static_cast<const E*>(&c), s);
+    }
+
+    template <typename P1, typename T>
+    class ComplexSubScaI : public ComplexExpression<ComplexSubScaI<P1, T>, T>
+    {
+    public:
+        ComplexSubScaI(const P1& p1_, const T& s_): p1(p1_), s(s_) { }
+        T r() const { return s - p1.r(); }
+        T i() const { return -p1.i(); }
+    private:
+        const P1& p1;
+        const T s;
+    };
+
+    template <typename E, typename T>
+    ComplexSubScaI<E, T> operator-(const T& s, const ComplexExpression<E, T>& c)
+    {
+        return ComplexSubScaI<E, T>(*static_cast<const E*>(&c), s);
+    }
+
 
     template<typename E, typename T>
     std::ostream& operator<<(std::ostream& out, const ComplexExpression<E, T>& expr)
     {
-        out << expr.r() << SEPARETOR << expr.i() << COMPLEX_IMG;
+        out << expr.r() << SEPARATOR << COMPLEX_BET << expr.i() << COMPLEX_IMG;
         return out;
     }
 }

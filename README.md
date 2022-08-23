@@ -107,4 +107,88 @@ scalar / array: divides scalar by each element of array.
 ```
 
 ## `my::Matrix`
+Again, the matrix defined here is closer to the mathematical definition of matrices. The matrix operations also are
+related to the mathematical matrix operations. One operation defined here doesn't have mathematical meaning, which
+is the division of matrices.
+
+This struct is templated on the type.
+### Constructors
+`my::Matrix` have 6 constructors:
+```c++
+Matrix(): zero initialize the matrix.
+Matrix(std::size_t rows, std::size_t cols): initialize the matrix with the given size.
+Matrix(std::size_t rows, std::size_t cols, function(std::size_t index, type element)): initilizes matrix with given size setting each element to the returning value fo function.
+Matrix(const Matrix &other): copy other to the matrix.
+Matrix(Matrix &&other): move other into matrix. other is no longer available to use, since it will seg fault.
+Matrix(const MatrixExpression &expr): evaluates expr, setting each element by its evaluation.
+```
+### Functions
+```c++
+matrix.rows(): returns the number of rows in the matrix.
+matrix.cols(): returns the number of columns in the matrix.
+matrix.insertRow(): inserts a zero initialized row.
+matrix.insertRow(const type* data): inserts data into a inserted row.
+matrix.insertRow(const Vec& data): inserts data into a inserted row.
+matrix.insertRow(const Array& data): inserts data into a inserted row.
+matrix.insertCol(): inserts a zero initialized column.
+matrix.insertCol(const type* data): inserts data into a inserted column.
+matrix.insertCol(const Vec& data): inserts data into a inserted column.
+matrix.insertCol(const Array& data): inserts data into a inserted column.
+matrix.expand(std::size_t new_rows, std::size_t new_cols): changes the matrix size to given one.
+matrix.forEach(function(std::size_t row, std::size_t col, type element)): sets each element of matrix to the function evaluation.
+matrix.determinant(): to be implemented.
+matrix.diagonalize(): to be implemented.
+```
+### Matrix Expressions
+The following operations with matrices are available:
+```c++
+matrix_1 + matrix_2: element wise sum of matrices.
+matrix_1 - matrix_2: element wise subtraction of matrices.
+matrix_1 / matrix_2: element wise division of matrices.
+matrix_1 * matrix_2: mathematical matrix multiplication.
+matrix_1 ^ matrix_2: element wise multiplication of matrices.
+matrix_1 % matrix_2: tensor product of matrices.
+scalar * matrix: multiplies each element by scalar.
+matrix / scalar: divides each element by scalar.
+scalar / matrix: divides scalar to each matrix element.
+matrix + scalar: sums scalar to the matrix main diagonal.
+matrix - scalar: subtracts scalar from the matrix main diagonal.
+!matrix: transposed matrix.
+```
 ## `my::Complex`
+It is kind of lost in here, since it doesn't have anything related to memory allocation. However, I think
+complex numbers are cool, so a put it together.
+Same thing, a templated struct.
+### Constructors
+Complex numbers have 5 constructors:
+```c++
+Complex(): zero initialize real & imaginary parts.
+Complex(type real_part, type imag_part): initialize real & imaginary parts by given values.
+Complex(const Complex &other): trivial copy constructor.
+Complex(Complex &&other): trivial move constructor.
+Complex(const ComplexExpression &expr): evaluates expr setting real & imaginary parts by evaluation.
+```
+### Functions
+```c++
+complex.r(): returns the real part.
+complex.i(): returns the imaginary part.
+my::complexExp(theta): uses Euler identity to evaluate e^{i theta}.
+```
+### Complex Expressions
+Here, just the trivial expression are available:
+```c++
+complex_1 + complex_2: sum two complex numbers.
+complex_1 - complex_2: subtracts two complex numbers.
+complex_1 / complex_2: usual complex division.
+complex_1 * complex_2: usual complex multiplication.
+scalar * complex: multiples both real & imaginary parts by scalar.
+complex / scalar: divices both real & imaginary parts by scalar.
+scalar / complex: complex division.
+scalar + complex: sums scalar to real part.
+complex - scalar: subtracts scalar from real part.
+scalar - complex: subtracts the real part from scalar, also inverts imaginary part.
+!complex: complex conjugate.
+```
+## Tests
+I really didn't made a ton of tests, just some tests to see if all operations were working.
+I don't think there is a memory leak anywhere, at least I hope so.
