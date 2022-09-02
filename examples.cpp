@@ -6,7 +6,7 @@
 
 #include <iostream>
 #include <fstream>
-#include "all.hpp"
+#include "alglin_stuffed.hpp"
 
 //g++ -o examples examples.cpp
 

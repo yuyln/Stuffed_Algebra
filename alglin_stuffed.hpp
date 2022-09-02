@@ -1,5 +1,5 @@
-#ifndef ___
-#define ___
+#ifndef _ALGLIN_STUFFED__
+#define _ALGLIN_STUFFED__
 
 #include <cstdlib>
 #include <cstring>
