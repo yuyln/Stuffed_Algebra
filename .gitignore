@@ -1,8 +1,4 @@
 .vscode
-array.hpp
-vec.hpp
-matrix.hpp
 *.bat
 *.exe
-output_examples
-text.cpp
+examples
