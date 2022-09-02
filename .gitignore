@@ -5,3 +5,4 @@ matrix.hpp
 *.bat
 *.exe
 output_examples
+text.cpp

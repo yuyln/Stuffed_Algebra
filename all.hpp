@@ -1919,7 +1919,6 @@ namespace my
         return ComplexSubScaI<E, T>(*static_cast<const E*>(&c), s);
     }
 
-
     template<typename E, typename T>
     std::ostream& operator<<(std::ostream& out, const ComplexExpression<E, T>& expr)
     {

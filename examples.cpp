@@ -118,6 +118,9 @@ void exampleMatrix(std::ostream &out=std::cout)
     out << "m1.expand(5, 5): " << std::endl;
     out << m1.expand(5, 5) << std::endl << std::endl;
 
+    out << "m1.expand(2, 2): " << std::endl;
+    out << m1.expand(2, 2) << std::endl << std::endl;
+
     out << "!m1: " << std::endl;
     out << !m1 << std::endl << std::endl;
 
