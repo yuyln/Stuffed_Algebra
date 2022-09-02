@@ -39,7 +39,7 @@
 #endif
 
 //VEC
-namespace my
+namespace stuff
 {
     #ifdef VEC_DEBUG
     static std::size_t VEC_DEBUG_COUNT = 0;
@@ -426,7 +426,7 @@ namespace my
 }
 
 //ARRAY
-namespace my
+namespace stuff
 {
     #ifdef ARRAY_DEBUG
     static std::size_t ARRAY_DEBUG_COUNT = 0;
@@ -855,7 +855,7 @@ namespace my
 //my::Array<my::Array<T>>
 //one day, maybe
 
-namespace my
+namespace stuff
 {
 
     #ifdef MATRIX_DEBUG
@@ -1626,7 +1626,7 @@ namespace my
 
 
 //COMPLEX
-namespace my
+namespace stuff
 {
     template <typename E, typename T>
     class ComplexExpression

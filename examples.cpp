@@ -12,8 +12,8 @@
 
 void exampleVecs(std::ostream &out=std::cout)
 {
-    my::Vec<4, double> v1(1.0, 2.0, 3.0, 4.0);
-    my::Vec<4, double> v2(5.0, 6.0, 7.0, 8.0);
+    stuff::Vec<4, double> v1(1.0, 2.0, 3.0, 4.0);
+    stuff::Vec<4, double> v2(5.0, 6.0, 7.0, 8.0);
     out << "----------------------------------" << std::endl;
     out << "Vector example: " << std::endl << std::endl;
 
@@ -36,7 +36,7 @@ void exampleArrays(std::ostream &out=std::cout)
 {
     out << "----------------------------------" << std::endl;
     out << "Array example: " << std::endl << std::endl;
-    my::Array<double> array1, array2;
+    stuff::Array<double> array1, array2;
     out << "Length at instantiation: " << array1.len() << std::endl;
     out << "Inserting elements: " << std::endl;
     out << "array1.insert(1.0): " << array1.insert(1.0) << std::endl;
@@ -69,7 +69,7 @@ void exampleMatrix(std::ostream &out=std::cout)
 {
     out << "----------------------------------" << std::endl;
     out << "Matrix example: " << std::endl << std::endl;
-    my::Matrix<double> m1(2, 2, [](std::size_t i, std::size_t j) { return (double)(i != j) + 1; }),
+    stuff::Matrix<double> m1(2, 2, [](std::size_t i, std::size_t j) { return (double)(i != j) + 1; }),
                        m2(2, 2, [](std::size_t i, std::size_t j) { return i + 2 * j + 1; });
     out << "Matrix m1: " << std::endl;
     out << m1 << std::endl << std::endl;
@@ -109,11 +109,11 @@ void exampleMatrix(std::ostream &out=std::cout)
     out << "m1 - 1.0: " << std::endl;
     out << m1 - 1.0 << std::endl << std::endl;
 
-    out << "m1.insertRow(my::Vec<2, double>(1.0, 2.0)): " << std::endl;
-    out << m1.insertRow(my::Vec<2, double>(1.0, 2.0)) << std::endl << std::endl;
+    out << "m1.insertRow(stuff::Vec<2, double>(1.0, 2.0)): " << std::endl;
+    out << m1.insertRow(stuff::Vec<2, double>(1.0, 2.0)) << std::endl << std::endl;
 
-    out << "m1.insertCol(my::Vec<3, double>(1.0, 3.0, 4.0)): " << std::endl;
-    out << m1.insertCol(my::Vec<3, double>(1.0, 3.0, 4.0)) << std::endl << std::endl;
+    out << "m1.insertCol(stuff::Vec<3, double>(1.0, 3.0, 4.0)): " << std::endl;
+    out << m1.insertCol(stuff::Vec<3, double>(1.0, 3.0, 4.0)) << std::endl << std::endl;
 
     out << "m1.expand(5, 5): " << std::endl;
     out << m1.expand(5, 5) << std::endl << std::endl;
@@ -134,7 +134,7 @@ void exampleMatrix(std::ostream &out=std::cout)
 
 void exampleComplex(std::ostream &out=std::cout)
 {
-    my::Complex<double> c1(1.0, 2.0), c2(2.0, -1.0);
+    stuff::Complex<double> c1(1.0, 2.0), c2(2.0, -1.0);
     out << "----------------------------------" << std::endl;
     out << "Complex example: " << std::endl << std::endl;
     out << "c1: " << c1 << std::endl;
@@ -151,7 +151,7 @@ void exampleComplex(std::ostream &out=std::cout)
     out << "-c1: " << -c1 << std::endl;
     out << "!c1: " << !c1 << std::endl;
     out << "c1 * !c1: " << c1 * !c1 << std::endl;
-    out << "my::complexExp(M_PI): " << my::complexExp(M_PI) << std::endl;
+    out << "stuff::complexExp(M_PI): " << stuff::complexExp(M_PI) << std::endl;
     out << "----------------------------------" << std::endl;
 }
 

@@ -1,9 +1,9 @@
-# Place Holder
+# Linear Algebra Stuffed
 ## Introduction
 This library was made with studying purposes only.
 Since I personally avoid using modern C++ stuff, such as `std::vector`, and really like using old C stuff, aka `malloc`,
-`free`, etc, I decided to do my implementation of `my::Vec` (which is conceptually different from `std::vector`), and
-some other things (`my::Array`, `my::Matrix`).
+`free`, etc, I decided to do my implementation of `stuff::Vec` (which is conceptually different from `std::vector`), and
+some other things (`stuff::Array`, `stuff::Matrix`).
 
 ## Examples
 There is a file with a full set of examples using all structs here. Compile with:
@@ -13,13 +13,13 @@ $ g++ -o examples examples.cpp
 It`s just that, there is no weird stuff on compilation.
 
 ## Specifications
-## `my::Vec`
-`my::Vec` is a templated struct, defined as `my::Vec<std::size_t dimensions, data type>`. From here becomes clear that
+## `stuff::Vec`
+`stuff::Vec` is a templated struct, defined as `stuff::Vec<std::size_t dimensions, data type>`. From here becomes clear that
 this is totally different from `std::vector`, since it have a fixed length (aka dimensions). This vector is more related
 to the physical vector, which has a direction and length. However, some operations implementated here doesn't exists in
 real vector math.
 ### Constructors
-`my::Vec` takes 5 constructors:
+`stuff::Vec` takes 5 constructors:
 ```c++
 Vec()
 Vec(type i0, type i1, type i2, ...)
@@ -40,7 +40,7 @@ vector.forEach(function(index, element)): change each element to the functions r
 ```
 
 ### Vector Expressions
-`my::Vec` uses expression templates to accept an easier typing without any overhead. The following expressions and their definitions are available:
+`stuff::Vec` uses expression templates to accept an easier typing without any overhead. The following expressions and their definitions are available:
 ```c++
 vector_1+vector_2: the trivial sum of two vector, sum each element of vector_1 with the respective element on vector_2.
 vector_1 - vector_2: same thing as the sum, but with subtraction.
@@ -53,19 +53,19 @@ scalar / vector: divides scalar by each element of vector.
 ```
   
 ### Common types
-Usually vector with a similar struct have well known uses. So, for simplicity some shorther definitions are available: `my::Vec2d`, `my::Vec2f`, `my::Vec2i`, `my::Vec3d`, `my::Vec3f`, `my::Vec3i`, which have the following definitions:
+Usually vector with a similar struct have well known uses. So, for simplicity some shorther definitions are available: `stuff::Vec2d`, `stuff::Vec2f`, `stuff::Vec2i`, `stuff::Vec3d`, `stuff::Vec3f`, `stuff::Vec3i`, which have the following definitions:
 ```c++
-my::Vec2d = my::Vec<2, double>
-my::Vec2f = my::Vec<2, float>
-my::Vec2i = my::Vec<2, int>
-my::Vec3d = my::Vec<3, double>
-my::Vec3f = my::Vec<3, float>
-my::Vec3i = my::Vec<3, int>
+stuff::Vec2d = stuff::Vec<2, double>
+stuff::Vec2f = stuff::Vec<2, float>
+stuff::Vec2i = stuff::Vec<2, int>
+stuff::Vec3d = stuff::Vec<3, double>
+stuff::Vec3f = stuff::Vec<3, float>
+stuff::Vec3i = stuff::Vec<3, int>
 ```
 
-## `my::Array`
-`my::Array` is defined to be similar to `my::Vec`, but with changing size. It is templated with the data type
-`my::Array<type>`. Here you can insert and remove elements from the array, changing its corresponding size.
+## `stuff::Array`
+`stuff::Array` is defined to be similar to `stuff::Vec`, but with changing size. It is templated with the data type
+`stuff::Array<type>`. Here you can insert and remove elements from the array, changing its corresponding size.
 For low overhead by calling `realloc`, this structs caches its elements on an array.
 Every time an element is inserted, the struct checks if inserting an element will be off the allocated memory
 region, if yes, then it allocates a new memory block region adding the size of 64 elements on the cached array.
@@ -106,14 +106,14 @@ array / scalar: divides each element of array by scalar.
 scalar / array: divides scalar by each element of array.
 ```
 
-## `my::Matrix`
+## `stuff::Matrix`
 Again, the matrix defined here is closer to the mathematical definition of matrices. The matrix operations also are
 related to the mathematical matrix operations. One operation defined here doesn't have mathematical meaning, which
 is the division of matrices.
 
 This struct is templated on the type.
 ### Constructors
-`my::Matrix` have 6 constructors:
+`stuff::Matrix` have 6 constructors:
 ```c++
 Matrix(): zero initialize the matrix.
 Matrix(std::size_t rows, std::size_t cols): initialize the matrix with the given size.
@@ -155,7 +155,7 @@ matrix + scalar: sums scalar to the matrix main diagonal.
 matrix - scalar: subtracts scalar from the matrix main diagonal.
 !matrix: transposed matrix.
 ```
-## `my::Complex`
+## `stuff::Complex`
 It is kind of lost in here, since it doesn't have anything related to memory allocation. However, I think
 complex numbers are cool, so a put it together.
 Same thing, a templated struct.
@@ -172,7 +172,7 @@ Complex(const ComplexExpression &expr): evaluates expr setting real & imaginary 
 ```c++
 complex.r(): returns the real part.
 complex.i(): returns the imaginary part.
-my::complexExp(theta): uses Euler identity to evaluate e^{i theta}.
+stuff::complexExp(theta): uses Euler identity to evaluate e^{i theta}.
 ```
 ### Complex Expressions
 Here, just the trivial expression are available:
